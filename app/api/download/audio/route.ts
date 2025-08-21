@@ -2,6 +2,7 @@ import ytdl from '@distube/ytdl-core';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from 'ffmpeg-static';
 import sanitize from 'sanitize-filename';
+import { getStoredCookieHeader } from '../../../../lib/cookieStore';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -24,7 +25,9 @@ export async function GET(request: Request) {
 			'Referer': 'https://www.youtube.com/',
 			'Origin': 'https://www.youtube.com'
 		};
-		if (process.env.YT_COOKIE) headers['Cookie'] = process.env.YT_COOKIE;
+		const storedCookie = await getStoredCookieHeader();
+		if (storedCookie) headers['Cookie'] = storedCookie;
+		else if (process.env.YT_COOKIE) headers['Cookie'] = process.env.YT_COOKIE;
 		const info = await ytdl.getInfo(url, { requestOptions: { headers } } as any);
 		const title = sanitize(info.videoDetails.title || 'audio') || 'audio';
 
