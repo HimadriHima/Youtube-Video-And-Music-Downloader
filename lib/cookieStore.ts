@@ -1,6 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+function isVercel(): boolean {
+	return Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
+}
+
 function getPersistentDataDir(): string {
 	const platform = process.platform;
 	let base: string | undefined;
@@ -9,6 +13,8 @@ function getPersistentDataDir(): string {
 	else base = process.env.XDG_DATA_HOME || (process.env.HOME ? path.join(process.env.HOME, '.local', 'share') : undefined);
 	return base ? path.join(base, 'yt-downloader') : path.join(process.cwd(), '.data');
 }
+
+const VERCELL_COOKIE_ENV = 'YT_COOKIE_STORED';
 
 const DATA_DIR = getPersistentDataDir();
 const COOKIE_FILE = path.join(DATA_DIR, 'yt_cookie.txt');
@@ -45,6 +51,11 @@ function parseCookiesTxtToHeader(cookiesTxt: string): string {
 }
 
 export async function getStoredCookieHeader(): Promise<string | null> {
+	// For Vercel, use environment variable
+	if (isVercel()) {
+		return process.env[VERCELL_COOKIE_ENV] || null;
+	}
+
 	try {
 		let content: string;
 		try {
@@ -79,6 +90,15 @@ export async function getStoredCookieHeader(): Promise<string | null> {
 export async function saveCookieFromHeader(cookieHeader: string): Promise<void> {
 	const header = (cookieHeader || '').trim();
 	if (!header) throw new Error('Cookie header is empty');
+	
+	// For Vercel, we can't persist to filesystem, so we'll use a different approach
+	if (isVercel()) {
+		// In Vercel, we can only store in memory for the current request
+		// The cookie will be lost after the request ends, but this allows the current request to work
+		// For persistent storage on Vercel, you'd need a database or external storage service
+		throw new Error('Cookie persistence not supported on Vercel. Use environment variable YT_COOKIE_STORED instead.');
+	}
+	
 	await ensureDirectoryExists(DATA_DIR);
 	await fs.writeFile(COOKIE_FILE, header, 'utf8');
 }
@@ -86,11 +106,22 @@ export async function saveCookieFromHeader(cookieHeader: string): Promise<void> 
 export async function saveCookieFromCookiesTxt(cookiesTxt: string): Promise<void> {
 	const header = parseCookiesTxtToHeader(cookiesTxt || '');
 	if (!header) throw new Error('Parsed cookies.txt is empty or invalid');
+	
+	// For Vercel, we can't persist to filesystem
+	if (isVercel()) {
+		throw new Error('Cookie persistence not supported on Vercel. Use environment variable YT_COOKIE_STORED instead.');
+	}
+	
 	await ensureDirectoryExists(DATA_DIR);
 	await fs.writeFile(COOKIE_FILE, header, 'utf8');
 }
 
 export async function deleteStoredCookie(): Promise<void> {
+	// For Vercel, we can't modify environment variables at runtime
+	if (isVercel()) {
+		throw new Error('Cookie deletion not supported on Vercel. Remove YT_COOKIE_STORED environment variable instead.');
+	}
+	
 	try {
 		await fs.unlink(COOKIE_FILE);
 	} catch {
@@ -99,6 +130,11 @@ export async function deleteStoredCookie(): Promise<void> {
 }
 
 export async function getCookieFileInfo(): Promise<{ exists: boolean; mtimeMs?: number }> {
+	// For Vercel, check environment variable
+	if (isVercel()) {
+		return { exists: Boolean(process.env[VERCELL_COOKIE_ENV]), mtimeMs: Date.now() };
+	}
+
 	try {
 		const stats = await fs.stat(COOKIE_FILE);
 		return { exists: true, mtimeMs: stats.mtimeMs };

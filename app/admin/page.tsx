@@ -11,6 +11,7 @@ export default function AdminPage() {
 	const [message, setMessage] = useState<string>('');
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>('');
+	const [isVercel, setIsVercel] = useState<boolean>(false);
 
 	async function refreshStatus() {
 		try {
@@ -33,6 +34,8 @@ export default function AdminPage() {
 
 	useEffect(() => {
 		refreshStatus();
+		// Check if we're on Vercel
+		setIsVercel(window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com'));
 	}, []);
 
 	async function submitJSON(body: any) {
@@ -127,6 +130,71 @@ export default function AdminPage() {
 	}
 
 	if (!authenticated) return <Login />;
+
+	if (isVercel) {
+		return (
+			<div style={{ maxWidth: 800, margin: '40px auto', padding: 16 }}>
+				<h2>Admin: YouTube Cookie (Vercel)</h2>
+				<p>Status: {hasCookie ? 'Cookie Saved' : 'No Cookie Saved'} {lastUpdated ? `(Updated: ${lastUpdated})` : ''}</p>
+				{message && <p>{message}</p>}
+				
+				<div style={{ background: '#f0f0f0', padding: 16, borderRadius: 8, marginBottom: 16 }}>
+					<h3>⚠️ Vercel Deployment Notice</h3>
+					<p>This app is running on Vercel, which doesn't support filesystem storage. To use YouTube cookies:</p>
+					<ol>
+						<li>Parse your cookies.txt or cookie header</li>
+						<li>Go to your Vercel project dashboard</li>
+						<li>Settings → Environment Variables</li>
+						<li>Add: <code>YT_COOKIE_STORED</code> = <code>your-cookie-header-here</code></li>
+						<li>Redeploy your app</li>
+					</ol>
+					<p><strong>Example:</strong> <code>YT_COOKIE_STORED=VISITOR_INFO1_LIVE=abc123; LOGIN_INFO=def456; SID=ghi789</code></p>
+				</div>
+
+				<div style={{ display: 'grid', gap: 16 }}>
+					<div>
+						<label>Paste Cookie Header (for reference):</label>
+						<textarea value={cookieHeader} onChange={(e) => setCookieHeader(e.target.value)} rows={3} style={{ width: '100%' }} placeholder="Paste your cookie header here to copy to Vercel env var" />
+						<button onClick={() => {
+							if (cookieHeader.trim()) {
+								navigator.clipboard.writeText(cookieHeader.trim());
+								setMessage('Copied to clipboard! Add this as YT_COOKIE_STORED in Vercel env vars.');
+							}
+						}} disabled={!cookieHeader.trim()}>Copy for Vercel Env Var</button>
+					</div>
+					<div>
+						<label>Paste cookies.txt (for reference):</label>
+						<textarea value={cookiesTxt} onChange={(e) => setCookiesTxt(e.target.value)} rows={6} style={{ width: '100%' }} placeholder="Paste your cookies.txt here to parse and copy header" />
+						<button onClick={() => {
+							if (cookiesTxt.trim()) {
+								// Simple parsing - in real app you'd use the server-side parser
+								const lines = cookiesTxt.split('\n');
+								const cookies: string[] = [];
+								lines.forEach(line => {
+									const parts = line.split('\t');
+									if (parts.length >= 7) {
+										const name = parts[5];
+										const value = parts[6];
+										if (name && value) cookies.push(`${name}=${value}`);
+									}
+								});
+								const header = cookies.join('; ');
+								if (header) {
+									navigator.clipboard.writeText(header);
+									setMessage('Parsed and copied to clipboard! Add this as YT_COOKIE_STORED in Vercel env vars.');
+								} else {
+									setMessage('Failed to parse cookies.txt');
+								}
+							}
+						}} disabled={!cookiesTxt.trim()}>Parse & Copy for Vercel</button>
+					</div>
+					<div>
+						<button onClick={async () => { setLoading(true); setMessage(''); try { const r = await fetch('/api/admin/logout', { method: 'POST' }); if (!r.ok) throw new Error(await r.text()); await refreshStatus(); } catch (e: any) { setMessage(e?.message || 'Failed'); } finally { setLoading(false); } }}>Logout</button>
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div style={{ maxWidth: 800, margin: '40px auto', padding: 16 }}>
