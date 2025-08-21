@@ -1,8 +1,19 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const DATA_DIR = path.join(process.cwd(), '.data');
+function getPersistentDataDir(): string {
+	const platform = process.platform;
+	let base: string | undefined;
+	if (platform === 'win32') base = process.env.APPDATA || process.env.LOCALAPPDATA || undefined;
+	else if (platform === 'darwin') base = process.env.HOME ? path.join(process.env.HOME, 'Library', 'Application Support') : undefined;
+	else base = process.env.XDG_DATA_HOME || (process.env.HOME ? path.join(process.env.HOME, '.local', 'share') : undefined);
+	return base ? path.join(base, 'yt-downloader') : path.join(process.cwd(), '.data');
+}
+
+const DATA_DIR = getPersistentDataDir();
 const COOKIE_FILE = path.join(DATA_DIR, 'yt_cookie.txt');
+const LEGACY_DIR = path.join(process.cwd(), '.data');
+const LEGACY_COOKIE_FILE = path.join(LEGACY_DIR, 'yt_cookie.txt');
 
 function ensureDirectoryExists(directoryPath: string): Promise<void> {
 	return fs.mkdir(directoryPath, { recursive: true }).then(() => {});
@@ -35,7 +46,24 @@ function parseCookiesTxtToHeader(cookiesTxt: string): string {
 
 export async function getStoredCookieHeader(): Promise<string | null> {
 	try {
-		const content = await fs.readFile(COOKIE_FILE, 'utf8');
+		let content: string;
+		try {
+			content = await fs.readFile(COOKIE_FILE, 'utf8');
+		} catch {
+			// Attempt legacy migration
+			try {
+				const legacy = await fs.readFile(LEGACY_COOKIE_FILE, 'utf8');
+				if (legacy && legacy.trim()) {
+					await ensureDirectoryExists(DATA_DIR);
+					await fs.writeFile(COOKIE_FILE, legacy, 'utf8');
+					content = legacy;
+				} else {
+					throw new Error('No legacy cookie');
+				}
+			} catch {
+				return null;
+			}
+		}
 		if (!content.trim()) return null;
 		// If file looks like a Netscape cookies.txt, parse to header string
 		if (content.includes('\t') || content.includes('Netscape')) {

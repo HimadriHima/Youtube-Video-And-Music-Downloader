@@ -9,8 +9,15 @@ export default function AdminPage() {
 	const [cookiesTxt, setCookiesTxt] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [message, setMessage] = useState<string>('');
+	const [authenticated, setAuthenticated] = useState<boolean>(false);
+	const [password, setPassword] = useState<string>('');
 
 	async function refreshStatus() {
+		try {
+			const me = await fetch('/api/admin/me');
+			const meData = await me.json();
+			setAuthenticated(Boolean(meData?.authenticated));
+		} catch {}
 		try {
 			const res = await fetch('/api/admin/cookie');
 			const data = await res.json();
@@ -97,6 +104,30 @@ export default function AdminPage() {
 		}
 	}
 
+	function Login() {
+		return (
+			<div style={{ maxWidth: 400, margin: '40px auto', padding: 16 }}>
+				<h2>Admin Login</h2>
+				<p>Enter admin password to continue.</p>
+				<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" style={{ width: '100%', marginBottom: 8 }} />
+				<button disabled={!password.trim() || loading} onClick={async () => {
+					setLoading(true); setMessage('');
+					try {
+						const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) });
+						if (!res.ok) throw new Error(await res.text());
+						setPassword('');
+						await refreshStatus();
+					} catch (err: any) {
+						setMessage(err?.message || 'Login failed');
+					} finally { setLoading(false); }
+				}}>Login</button>
+				{message && <p>{message}</p>}
+			</div>
+		);
+	}
+
+	if (!authenticated) return <Login />;
+
 	return (
 		<div style={{ maxWidth: 800, margin: '40px auto', padding: 16 }}>
 			<h2>Admin: YouTube Cookie</h2>
@@ -119,6 +150,9 @@ export default function AdminPage() {
 				</div>
 				<div>
 					<button onClick={handleDelete} disabled={loading || !hasCookie}>Delete Saved Cookie</button>
+				</div>
+				<div>
+					<button onClick={async () => { setLoading(true); setMessage(''); try { const r = await fetch('/api/admin/logout', { method: 'POST' }); if (!r.ok) throw new Error(await r.text()); await refreshStatus(); } catch (e: any) { setMessage(e?.message || 'Failed'); } finally { setLoading(false); } }}>Logout</button>
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,14 @@
 import { deleteStoredCookie, getCookieFileInfo, getStoredCookieHeader, saveCookieFromCookiesTxt, saveCookieFromHeader } from '../../../../lib/cookieStore';
+import { getSessionCookieName, parseCookieHeader, verifySessionToken } from '../../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-export async function GET() {
+export async function GET(request: Request) {
+	const cookieHeader = request.headers.get('cookie');
+	const cookies = parseCookieHeader(cookieHeader);
+	const token = cookies[getSessionCookieName()];
+	if (!verifySessionToken(token)) return new Response('Unauthorized', { status: 401 });
 	const [header, info] = await Promise.all([
 		getStoredCookieHeader(),
 		getCookieFileInfo()
@@ -16,6 +21,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+	const cookieHeader0 = request.headers.get('cookie');
+	const cookies0 = parseCookieHeader(cookieHeader0);
+	const token0 = cookies0[getSessionCookieName()];
+	if (!verifySessionToken(token0)) return new Response('Unauthorized', { status: 401 });
 	try {
 		const contentType = request.headers.get('content-type') || '';
 		if (contentType.includes('application/json')) {
@@ -46,7 +55,11 @@ export async function POST(request: Request) {
 	}
 }
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
+	const cookieHeader = request.headers.get('cookie');
+	const cookies = parseCookieHeader(cookieHeader);
+	const token = cookies[getSessionCookieName()];
+	if (!verifySessionToken(token)) return new Response('Unauthorized', { status: 401 });
 	await deleteStoredCookie();
 	return Response.json({ ok: true });
 }
