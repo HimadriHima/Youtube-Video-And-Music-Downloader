@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/api/admin/login":{},"/api/admin/me":{},"/api/info":{},"/api/admin/logout":{},"/api/admin/cookie":{},"/api/download/video":{},"/api/download/audio":{}}}
+{"version":1,"functions":{"/api/download/video":{},"/api/info":{},"/api/download/audio":{}}}
