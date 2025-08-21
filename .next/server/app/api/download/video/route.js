@@ -1,1 +1,519 @@
-(()=>{var e={};e.id=753,e.ids=[753],e.modules={399:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},517:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},7790:e=>{"use strict";e.exports=require("assert")},2048:e=>{"use strict";e.exports=require("fs")},2615:e=>{"use strict";e.exports=require("http")},8791:e=>{"use strict";e.exports=require("https")},8216:e=>{"use strict";e.exports=require("net")},5315:e=>{"use strict";e.exports=require("path")},6624:e=>{"use strict";e.exports=require("querystring")},6162:e=>{"use strict";e.exports=require("stream")},4026:e=>{"use strict";e.exports=require("string_decoder")},5346:e=>{"use strict";e.exports=require("timers")},2452:e=>{"use strict";e.exports=require("tls")},4175:e=>{"use strict";e.exports=require("tty")},7360:e=>{"use strict";e.exports=require("url")},153:e=>{"use strict";e.exports=require("util")},1520:e=>{"use strict";e.exports=require("vm")},8061:e=>{"use strict";e.exports=require("node:assert")},2761:e=>{"use strict";e.exports=require("node:async_hooks")},2254:e=>{"use strict";e.exports=require("node:buffer")},27:e=>{"use strict";e.exports=require("node:console")},6005:e=>{"use strict";e.exports=require("node:crypto")},5714:e=>{"use strict";e.exports=require("node:diagnostics_channel")},604:e=>{"use strict";e.exports=require("node:dns")},5673:e=>{"use strict";e.exports=require("node:events")},3977:e=>{"use strict";e.exports=require("node:fs/promises")},8849:e=>{"use strict";e.exports=require("node:http")},2725:e=>{"use strict";e.exports=require("node:http2")},7503:e=>{"use strict";e.exports=require("node:net")},9411:e=>{"use strict";e.exports=require("node:path")},8846:e=>{"use strict";e.exports=require("node:perf_hooks")},5815:e=>{"use strict";e.exports=require("node:querystring")},5467:e=>{"use strict";e.exports=require("node:sqlite")},4492:e=>{"use strict";e.exports=require("node:stream")},2332:e=>{"use strict";e.exports=require("node:timers")},1764:e=>{"use strict";e.exports=require("node:tls")},7261:e=>{"use strict";e.exports=require("node:util")},3746:e=>{"use strict";e.exports=require("node:util/types")},4086:e=>{"use strict";e.exports=require("node:worker_threads")},5628:e=>{"use strict";e.exports=require("node:zlib")},7529:()=>{},3492:(e,t,r)=>{"use strict";r.r(t),r.d(t,{originalPathname:()=>v,patchFetch:()=>w,requestAsyncStorage:()=>m,routeModule:()=>f,serverHooks:()=>g,staticGenerationAsyncStorage:()=>h});var s={};r.r(s),r.d(s,{GET:()=>q,dynamic:()=>l,runtime:()=>x});var i=r(9303),o=r(8716),n=r(670),u=r(1590),c=r.n(u),p=r(1139),a=r.n(p),d=r(214);let l="force-dynamic",x="nodejs";async function q(e){try{let{searchParams:t}=new URL(e.url),r=t.get("url")||"";if(!r||!c().validateURL(r))return new Response("Invalid URL",{status:400});let s={"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36","Accept-Language":"en-US,en;q=0.9",Referer:"https://www.youtube.com/",Origin:"https://www.youtube.com"},i=await (0,d.J)();i?s.Cookie=i:process.env.YT_COOKIE&&(s.Cookie=process.env.YT_COOKIE);let o=await c().getInfo(r,{requestOptions:{headers:s}}),n=a()(o.videoDetails.title||"video")||"video",u=o.formats.filter(e=>"mp4"===e.container&&e.hasAudio&&e.hasVideo),p=u.length>0?c().chooseFormat(u,{quality:"highest"}):c().chooseFormat(o.formats,{quality:"highest"}),l=c().downloadFromInfo(o,{format:p,requestOptions:{headers:s}}),{readable:x,writable:q}=new TransformStream,f=q.getWriter();l.on("data",e=>f.write(e)),l.on("end",()=>{try{f.close()}catch{}}),l.on("error",e=>{try{f.abort(e)}catch{}});let m=new Headers;m.set("Content-Type","video/mp4");let h=a()((n||"video").replace(/[^\x20-\x7E]/g,""))||"video",g=encodeURIComponent(`${n}.mp4`);return m.set("Content-Disposition",`attachment; filename="${h}.mp4"; filename*=UTF-8''${g}`),new Response(x,{headers:m})}catch(e){return new Response(e?.message||"Failed to download",{status:500})}}let f=new i.AppRouteRouteModule({definition:{kind:o.x.APP_ROUTE,page:"/api/download/video/route",pathname:"/api/download/video",filename:"route",bundlePath:"app/api/download/video/route"},resolvedPagePath:"C:\\Users\\Himadri\\Documents\\GitHub\\Youtube-Video-And-Music-Downloader\\app\\api\\download\\video\\route.ts",nextConfigOutput:"",userland:s}),{requestAsyncStorage:m,staticGenerationAsyncStorage:h,serverHooks:g}=f,v="/api/download/video/route";function w(){return(0,n.patchFetch)({serverHooks:g,staticGenerationAsyncStorage:h})}},214:(e,t,r)=>{"use strict";r.d(t,{J:()=>u});let s=require("fs/promises");var i=r.n(s),o=r(5315);let n=r.n(o)().join(process.cwd(),"cookie","cookie.txt");async function u(){try{let e=await i().readFile(n,"utf8");if(!e.trim())return null;if(e.includes("	")||e.includes("Netscape"))return function(e){let t={};for(let r of e.split(/\r?\n/)){let e=r.trim();if(!e||e.startsWith("#"))continue;let s=e.split(/\t+/);if(s.length>=7){let e=s[5],r=s.slice(6).join("	");e&&(t[e]=r);continue}let i=e.split(/\s+/);if(i.length>=7){let e=i[5],r=i.slice(6).join(" ");e&&(t[e]=r)}}return Object.entries(t).map(([e,t])=>`${e}=${t}`).join("; ")}(e)||null;return e.trim()}catch{return process.env.YT_COOKIE_STORED||null}}},1139:(e,t,r)=>{"use strict";var s=r(8971),i=/[\/\?<>\\:\*\|"]/g,o=/[\x00-\x1f\x80-\x9f]/g,n=/^\.+$/,u=/^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i,c=/[\. ]+$/;function p(e,t){if("string"!=typeof e)throw Error("Input must be string");return s(e.replace(i,t).replace(o,t).replace(n,t).replace(u,t).replace(c,t),255)}e.exports=function(e,t){var r=t&&t.replacement||"",s=p(e,r);return""===r?s:p(s,"")}},8971:(e,t,r)=>{"use strict";var s=r(5027),i=Buffer.byteLength.bind(Buffer);e.exports=s.bind(null,i)},5027:e=>{"use strict";e.exports=function(e,t,r){if("string"!=typeof t)throw Error("Input must be string");for(var s,i,o,n=t.length,u=0,c=0;c<n;c+=1){if(i=t.charCodeAt(c),o=t[c],i>=55296&&i<=56319&&(s=t.charCodeAt(c+1))>=56320&&s<=57343&&(c+=1,o+=t[c]),(u+=e(o))===r)return t.slice(0,c+1);if(u>r)return t.slice(0,c-o.length+1)}return t}}};var t=require("../../../../webpack-runtime.js");t.C(e);var r=e=>t(t.s=e),s=t.X(0,[948,495],()=>r(3492));module.exports=s})();
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+(() => {
+var exports = {};
+exports.id = "app/api/download/video/route";
+exports.ids = ["app/api/download/video/route"];
+exports.modules = {
+
+/***/ "next/dist/compiled/next-server/app-page.runtime.dev.js":
+/*!*************************************************************************!*\
+  !*** external "next/dist/compiled/next-server/app-page.runtime.dev.js" ***!
+  \*************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/compiled/next-server/app-page.runtime.dev.js");
+
+/***/ }),
+
+/***/ "next/dist/compiled/next-server/app-route.runtime.dev.js":
+/*!**************************************************************************!*\
+  !*** external "next/dist/compiled/next-server/app-route.runtime.dev.js" ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/compiled/next-server/app-route.runtime.dev.js");
+
+/***/ }),
+
+/***/ "assert":
+/*!*************************!*\
+  !*** external "assert" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("assert");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "fs/promises":
+/*!******************************!*\
+  !*** external "fs/promises" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
+
+/***/ }),
+
+/***/ "http":
+/*!***********************!*\
+  !*** external "http" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("http");
+
+/***/ }),
+
+/***/ "https":
+/*!************************!*\
+  !*** external "https" ***!
+  \************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("https");
+
+/***/ }),
+
+/***/ "net":
+/*!**********************!*\
+  !*** external "net" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("net");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");
+
+/***/ }),
+
+/***/ "querystring":
+/*!******************************!*\
+  !*** external "querystring" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("querystring");
+
+/***/ }),
+
+/***/ "stream":
+/*!*************************!*\
+  !*** external "stream" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("stream");
+
+/***/ }),
+
+/***/ "string_decoder":
+/*!*********************************!*\
+  !*** external "string_decoder" ***!
+  \*********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("string_decoder");
+
+/***/ }),
+
+/***/ "timers":
+/*!*************************!*\
+  !*** external "timers" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("timers");
+
+/***/ }),
+
+/***/ "tls":
+/*!**********************!*\
+  !*** external "tls" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("tls");
+
+/***/ }),
+
+/***/ "tty":
+/*!**********************!*\
+  !*** external "tty" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("tty");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("url");
+
+/***/ }),
+
+/***/ "util":
+/*!***********************!*\
+  !*** external "util" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("util");
+
+/***/ }),
+
+/***/ "vm":
+/*!*********************!*\
+  !*** external "vm" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("vm");
+
+/***/ }),
+
+/***/ "node:assert":
+/*!******************************!*\
+  !*** external "node:assert" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:assert");
+
+/***/ }),
+
+/***/ "node:async_hooks":
+/*!***********************************!*\
+  !*** external "node:async_hooks" ***!
+  \***********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:async_hooks");
+
+/***/ }),
+
+/***/ "node:buffer":
+/*!******************************!*\
+  !*** external "node:buffer" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:buffer");
+
+/***/ }),
+
+/***/ "node:console":
+/*!*******************************!*\
+  !*** external "node:console" ***!
+  \*******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:console");
+
+/***/ }),
+
+/***/ "node:crypto":
+/*!******************************!*\
+  !*** external "node:crypto" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:crypto");
+
+/***/ }),
+
+/***/ "node:diagnostics_channel":
+/*!*******************************************!*\
+  !*** external "node:diagnostics_channel" ***!
+  \*******************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:diagnostics_channel");
+
+/***/ }),
+
+/***/ "node:dns":
+/*!***************************!*\
+  !*** external "node:dns" ***!
+  \***************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:dns");
+
+/***/ }),
+
+/***/ "node:events":
+/*!******************************!*\
+  !*** external "node:events" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:events");
+
+/***/ }),
+
+/***/ "node:fs/promises":
+/*!***********************************!*\
+  !*** external "node:fs/promises" ***!
+  \***********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
+
+/***/ }),
+
+/***/ "node:http":
+/*!****************************!*\
+  !*** external "node:http" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:http");
+
+/***/ }),
+
+/***/ "node:http2":
+/*!*****************************!*\
+  !*** external "node:http2" ***!
+  \*****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:http2");
+
+/***/ }),
+
+/***/ "node:net":
+/*!***************************!*\
+  !*** external "node:net" ***!
+  \***************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:net");
+
+/***/ }),
+
+/***/ "node:path":
+/*!****************************!*\
+  !*** external "node:path" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:path");
+
+/***/ }),
+
+/***/ "node:perf_hooks":
+/*!**********************************!*\
+  !*** external "node:perf_hooks" ***!
+  \**********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:perf_hooks");
+
+/***/ }),
+
+/***/ "node:querystring":
+/*!***********************************!*\
+  !*** external "node:querystring" ***!
+  \***********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:querystring");
+
+/***/ }),
+
+/***/ "node:sqlite":
+/*!******************************!*\
+  !*** external "node:sqlite" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:sqlite");
+
+/***/ }),
+
+/***/ "node:stream":
+/*!******************************!*\
+  !*** external "node:stream" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:stream");
+
+/***/ }),
+
+/***/ "node:timers":
+/*!******************************!*\
+  !*** external "node:timers" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:timers");
+
+/***/ }),
+
+/***/ "node:tls":
+/*!***************************!*\
+  !*** external "node:tls" ***!
+  \***************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:tls");
+
+/***/ }),
+
+/***/ "node:util":
+/*!****************************!*\
+  !*** external "node:util" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:util");
+
+/***/ }),
+
+/***/ "node:util/types":
+/*!**********************************!*\
+  !*** external "node:util/types" ***!
+  \**********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:util/types");
+
+/***/ }),
+
+/***/ "node:worker_threads":
+/*!**************************************!*\
+  !*** external "node:worker_threads" ***!
+  \**************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:worker_threads");
+
+/***/ }),
+
+/***/ "node:zlib":
+/*!****************************!*\
+  !*** external "node:zlib" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:zlib");
+
+/***/ }),
+
+/***/ "?d272":
+/*!********************************!*\
+  !*** supports-color (ignored) ***!
+  \********************************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fapi%2Fdownload%2Fvideo%2Froute&page=%2Fapi%2Fdownload%2Fvideo%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fdownload%2Fvideo%2Froute.ts&appDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fapi%2Fdownload%2Fvideo%2Froute&page=%2Fapi%2Fdownload%2Fvideo%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fdownload%2Fvideo%2Froute.ts&appDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D! ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   originalPathname: () => (/* binding */ originalPathname),\n/* harmony export */   patchFetch: () => (/* binding */ patchFetch),\n/* harmony export */   requestAsyncStorage: () => (/* binding */ requestAsyncStorage),\n/* harmony export */   routeModule: () => (/* binding */ routeModule),\n/* harmony export */   serverHooks: () => (/* binding */ serverHooks),\n/* harmony export */   staticGenerationAsyncStorage: () => (/* binding */ staticGenerationAsyncStorage)\n/* harmony export */ });\n/* harmony import */ var next_dist_server_future_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/server/future/route-modules/app-route/module.compiled */ \"(rsc)/./node_modules/next/dist/server/future/route-modules/app-route/module.compiled.js\");\n/* harmony import */ var next_dist_server_future_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_future_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var next_dist_server_future_route_kind__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/dist/server/future/route-kind */ \"(rsc)/./node_modules/next/dist/server/future/route-kind.js\");\n/* harmony import */ var next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/dist/server/lib/patch-fetch */ \"(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js\");\n/* harmony import */ var next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var C_Users_Himadri_Documents_GitHub_Youtube_Video_And_Music_Downloader_app_api_download_video_route_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app/api/download/video/route.ts */ \"(rsc)/./app/api/download/video/route.ts\");\n\n\n\n\n// We inject the nextConfigOutput here so that we can use them in the route\n// module.\nconst nextConfigOutput = \"\"\nconst routeModule = new next_dist_server_future_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__.AppRouteRouteModule({\n    definition: {\n        kind: next_dist_server_future_route_kind__WEBPACK_IMPORTED_MODULE_1__.RouteKind.APP_ROUTE,\n        page: \"/api/download/video/route\",\n        pathname: \"/api/download/video\",\n        filename: \"route\",\n        bundlePath: \"app/api/download/video/route\"\n    },\n    resolvedPagePath: \"C:\\\\Users\\\\Himadri\\\\Documents\\\\GitHub\\\\Youtube-Video-And-Music-Downloader\\\\app\\\\api\\\\download\\\\video\\\\route.ts\",\n    nextConfigOutput,\n    userland: C_Users_Himadri_Documents_GitHub_Youtube_Video_And_Music_Downloader_app_api_download_video_route_ts__WEBPACK_IMPORTED_MODULE_3__\n});\n// Pull out the exports that we need to expose from the module. This should\n// be eliminated when we've moved the other routes to the new format. These\n// are used to hook into the route.\nconst { requestAsyncStorage, staticGenerationAsyncStorage, serverHooks } = routeModule;\nconst originalPathname = \"/api/download/video/route\";\nfunction patchFetch() {\n    return (0,next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__.patchFetch)({\n        serverHooks,\n        staticGenerationAsyncStorage\n    });\n}\n\n\n//# sourceMappingURL=app-route.js.map//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9ub2RlX21vZHVsZXMvbmV4dC9kaXN0L2J1aWxkL3dlYnBhY2svbG9hZGVycy9uZXh0LWFwcC1sb2FkZXIuanM/bmFtZT1hcHAlMkZhcGklMkZkb3dubG9hZCUyRnZpZGVvJTJGcm91dGUmcGFnZT0lMkZhcGklMkZkb3dubG9hZCUyRnZpZGVvJTJGcm91dGUmYXBwUGF0aHM9JnBhZ2VQYXRoPXByaXZhdGUtbmV4dC1hcHAtZGlyJTJGYXBpJTJGZG93bmxvYWQlMkZ2aWRlbyUyRnJvdXRlLnRzJmFwcERpcj1DJTNBJTVDVXNlcnMlNUNIaW1hZHJpJTVDRG9jdW1lbnRzJTVDR2l0SHViJTVDWW91dHViZS1WaWRlby1BbmQtTXVzaWMtRG93bmxvYWRlciU1Q2FwcCZwYWdlRXh0ZW5zaW9ucz10c3gmcGFnZUV4dGVuc2lvbnM9dHMmcGFnZUV4dGVuc2lvbnM9anN4JnBhZ2VFeHRlbnNpb25zPWpzJnJvb3REaXI9QyUzQSU1Q1VzZXJzJTVDSGltYWRyaSU1Q0RvY3VtZW50cyU1Q0dpdEh1YiU1Q1lvdXR1YmUtVmlkZW8tQW5kLU11c2ljLURvd25sb2FkZXImaXNEZXY9dHJ1ZSZ0c2NvbmZpZ1BhdGg9dHNjb25maWcuanNvbiZiYXNlUGF0aD0mYXNzZXRQcmVmaXg9Jm5leHRDb25maWdPdXRwdXQ9JnByZWZlcnJlZFJlZ2lvbj0mbWlkZGxld2FyZUNvbmZpZz1lMzAlM0QhIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7OztBQUFzRztBQUN2QztBQUNjO0FBQzhEO0FBQzNJO0FBQ0E7QUFDQTtBQUNBLHdCQUF3QixnSEFBbUI7QUFDM0M7QUFDQSxjQUFjLHlFQUFTO0FBQ3ZCO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsS0FBSztBQUNMO0FBQ0E7QUFDQSxZQUFZO0FBQ1osQ0FBQztBQUNEO0FBQ0E7QUFDQTtBQUNBLFFBQVEsaUVBQWlFO0FBQ3pFO0FBQ0E7QUFDQSxXQUFXLDRFQUFXO0FBQ3RCO0FBQ0E7QUFDQSxLQUFLO0FBQ0w7QUFDdUg7O0FBRXZIIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8veXQtZG93bmxvYWRlci8/ZWI4YSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBBcHBSb3V0ZVJvdXRlTW9kdWxlIH0gZnJvbSBcIm5leHQvZGlzdC9zZXJ2ZXIvZnV0dXJlL3JvdXRlLW1vZHVsZXMvYXBwLXJvdXRlL21vZHVsZS5jb21waWxlZFwiO1xuaW1wb3J0IHsgUm91dGVLaW5kIH0gZnJvbSBcIm5leHQvZGlzdC9zZXJ2ZXIvZnV0dXJlL3JvdXRlLWtpbmRcIjtcbmltcG9ydCB7IHBhdGNoRmV0Y2ggYXMgX3BhdGNoRmV0Y2ggfSBmcm9tIFwibmV4dC9kaXN0L3NlcnZlci9saWIvcGF0Y2gtZmV0Y2hcIjtcbmltcG9ydCAqIGFzIHVzZXJsYW5kIGZyb20gXCJDOlxcXFxVc2Vyc1xcXFxIaW1hZHJpXFxcXERvY3VtZW50c1xcXFxHaXRIdWJcXFxcWW91dHViZS1WaWRlby1BbmQtTXVzaWMtRG93bmxvYWRlclxcXFxhcHBcXFxcYXBpXFxcXGRvd25sb2FkXFxcXHZpZGVvXFxcXHJvdXRlLnRzXCI7XG4vLyBXZSBpbmplY3QgdGhlIG5leHRDb25maWdPdXRwdXQgaGVyZSBzbyB0aGF0IHdlIGNhbiB1c2UgdGhlbSBpbiB0aGUgcm91dGVcbi8vIG1vZHVsZS5cbmNvbnN0IG5leHRDb25maWdPdXRwdXQgPSBcIlwiXG5jb25zdCByb3V0ZU1vZHVsZSA9IG5ldyBBcHBSb3V0ZVJvdXRlTW9kdWxlKHtcbiAgICBkZWZpbml0aW9uOiB7XG4gICAgICAgIGtpbmQ6IFJvdXRlS2luZC5BUFBfUk9VVEUsXG4gICAgICAgIHBhZ2U6IFwiL2FwaS9kb3dubG9hZC92aWRlby9yb3V0ZVwiLFxuICAgICAgICBwYXRobmFtZTogXCIvYXBpL2Rvd25sb2FkL3ZpZGVvXCIsXG4gICAgICAgIGZpbGVuYW1lOiBcInJvdXRlXCIsXG4gICAgICAgIGJ1bmRsZVBhdGg6IFwiYXBwL2FwaS9kb3dubG9hZC92aWRlby9yb3V0ZVwiXG4gICAgfSxcbiAgICByZXNvbHZlZFBhZ2VQYXRoOiBcIkM6XFxcXFVzZXJzXFxcXEhpbWFkcmlcXFxcRG9jdW1lbnRzXFxcXEdpdEh1YlxcXFxZb3V0dWJlLVZpZGVvLUFuZC1NdXNpYy1Eb3dubG9hZGVyXFxcXGFwcFxcXFxhcGlcXFxcZG93bmxvYWRcXFxcdmlkZW9cXFxccm91dGUudHNcIixcbiAgICBuZXh0Q29uZmlnT3V0cHV0LFxuICAgIHVzZXJsYW5kXG59KTtcbi8vIFB1bGwgb3V0IHRoZSBleHBvcnRzIHRoYXQgd2UgbmVlZCB0byBleHBvc2UgZnJvbSB0aGUgbW9kdWxlLiBUaGlzIHNob3VsZFxuLy8gYmUgZWxpbWluYXRlZCB3aGVuIHdlJ3ZlIG1vdmVkIHRoZSBvdGhlciByb3V0ZXMgdG8gdGhlIG5ldyBmb3JtYXQuIFRoZXNlXG4vLyBhcmUgdXNlZCB0byBob29rIGludG8gdGhlIHJvdXRlLlxuY29uc3QgeyByZXF1ZXN0QXN5bmNTdG9yYWdlLCBzdGF0aWNHZW5lcmF0aW9uQXN5bmNTdG9yYWdlLCBzZXJ2ZXJIb29rcyB9ID0gcm91dGVNb2R1bGU7XG5jb25zdCBvcmlnaW5hbFBhdGhuYW1lID0gXCIvYXBpL2Rvd25sb2FkL3ZpZGVvL3JvdXRlXCI7XG5mdW5jdGlvbiBwYXRjaEZldGNoKCkge1xuICAgIHJldHVybiBfcGF0Y2hGZXRjaCh7XG4gICAgICAgIHNlcnZlckhvb2tzLFxuICAgICAgICBzdGF0aWNHZW5lcmF0aW9uQXN5bmNTdG9yYWdlXG4gICAgfSk7XG59XG5leHBvcnQgeyByb3V0ZU1vZHVsZSwgcmVxdWVzdEFzeW5jU3RvcmFnZSwgc3RhdGljR2VuZXJhdGlvbkFzeW5jU3RvcmFnZSwgc2VydmVySG9va3MsIG9yaWdpbmFsUGF0aG5hbWUsIHBhdGNoRmV0Y2gsICB9O1xuXG4vLyMgc291cmNlTWFwcGluZ1VSTD1hcHAtcm91dGUuanMubWFwIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fapi%2Fdownload%2Fvideo%2Froute&page=%2Fapi%2Fdownload%2Fvideo%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fdownload%2Fvideo%2Froute.ts&appDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!\n");
+
+/***/ }),
+
+/***/ "(rsc)/./app/api/download/video/route.ts":
+/*!*****************************************!*\
+  !*** ./app/api/download/video/route.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   GET: () => (/* binding */ GET),\n/* harmony export */   dynamic: () => (/* binding */ dynamic),\n/* harmony export */   runtime: () => (/* binding */ runtime)\n/* harmony export */ });\n/* harmony import */ var _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @distube/ytdl-core */ \"(rsc)/./node_modules/@distube/ytdl-core/lib/index.js\");\n/* harmony import */ var _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var sanitize_filename__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sanitize-filename */ \"(rsc)/./node_modules/sanitize-filename/index.js\");\n/* harmony import */ var sanitize_filename__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sanitize_filename__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _lib_cookieStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../lib/cookieStore */ \"(rsc)/./lib/cookieStore.ts\");\n\n\n\nconst dynamic = \"force-dynamic\";\nconst runtime = \"nodejs\";\nasync function GET(request) {\n    try {\n        const { searchParams } = new URL(request.url);\n        const url = searchParams.get(\"url\") || \"\";\n        if (!url || !_distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default().validateURL(url)) {\n            return new Response(\"Invalid URL\", {\n                status: 400\n            });\n        }\n        const headers = {\n            \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36\",\n            \"Accept-Language\": \"en-US,en;q=0.9\",\n            \"Referer\": \"https://www.youtube.com/\",\n            \"Origin\": \"https://www.youtube.com\"\n        };\n        const storedCookie = await (0,_lib_cookieStore__WEBPACK_IMPORTED_MODULE_2__.getStoredCookieHeader)();\n        if (storedCookie) headers[\"Cookie\"] = storedCookie;\n        else if (process.env.YT_COOKIE) headers[\"Cookie\"] = process.env.YT_COOKIE;\n        const info = await _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default().getInfo(url, {\n            requestOptions: {\n                headers\n            }\n        });\n        const title = sanitize_filename__WEBPACK_IMPORTED_MODULE_1___default()(info.videoDetails.title || \"video\") || \"video\";\n        // Prefer MP4 with audio+video\n        const mp4Formats = info.formats.filter((f)=>f.container === \"mp4\" && f.hasAudio && f.hasVideo);\n        const selected = mp4Formats.length > 0 ? _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default().chooseFormat(mp4Formats, {\n            quality: \"highest\"\n        }) : _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default().chooseFormat(info.formats, {\n            quality: \"highest\"\n        });\n        const nodeReadable = _distube_ytdl_core__WEBPACK_IMPORTED_MODULE_0___default().downloadFromInfo(info, {\n            format: selected,\n            requestOptions: {\n                headers\n            }\n        });\n        const { readable, writable } = new TransformStream();\n        const writer = writable.getWriter();\n        nodeReadable.on(\"data\", (chunk)=>writer.write(chunk));\n        nodeReadable.on(\"end\", ()=>{\n            try {\n                writer.close();\n            } catch  {}\n        });\n        nodeReadable.on(\"error\", (err)=>{\n            try {\n                writer.abort(err);\n            } catch  {}\n        });\n        const responseHeaders = new Headers();\n        responseHeaders.set(\"Content-Type\", \"video/mp4\");\n        const asciiFallback = sanitize_filename__WEBPACK_IMPORTED_MODULE_1___default()((title || \"video\").replace(/[^\\x20-\\x7E]/g, \"\")) || \"video\";\n        const utf8Encoded = encodeURIComponent(`${title}.mp4`);\n        responseHeaders.set(\"Content-Disposition\", `attachment; filename=\"${asciiFallback}.mp4\"; filename*=UTF-8''${utf8Encoded}`);\n        return new Response(readable, {\n            headers: responseHeaders\n        });\n    } catch (err) {\n        return new Response(err?.message || \"Failed to download\", {\n            status: 500\n        });\n    }\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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eXQtZG93bmxvYWRlci8uL2FwcC9hcGkvZG93bmxvYWQvdmlkZW8vcm91dGUudHM/MzI2OSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeXRkbCBmcm9tICdAZGlzdHViZS95dGRsLWNvcmUnO1xyXG5pbXBvcnQgc2FuaXRpemUgZnJvbSAnc2FuaXRpemUtZmlsZW5hbWUnO1xyXG5pbXBvcnQgeyBnZXRTdG9yZWRDb29raWVIZWFkZXIgfSBmcm9tICcuLi8uLi8uLi8uLi9saWIvY29va2llU3RvcmUnO1xyXG5cclxuZXhwb3J0IGNvbnN0IGR5bmFtaWMgPSAnZm9yY2UtZHluYW1pYyc7XHJcbmV4cG9ydCBjb25zdCBydW50aW1lID0gJ25vZGVqcyc7XHJcblxyXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gR0VUKHJlcXVlc3Q6IFJlcXVlc3QpIHtcclxuXHR0cnkge1xyXG5cdFx0Y29uc3QgeyBzZWFyY2hQYXJhbXMgfSA9IG5ldyBVUkwocmVxdWVzdC51cmwpO1xyXG5cdFx0Y29uc3QgdXJsID0gc2VhcmNoUGFyYW1zLmdldCgndXJsJykgfHwgJyc7XHJcblx0XHRpZiAoIXVybCB8fCAheXRkbC52YWxpZGF0ZVVSTCh1cmwpKSB7XHJcblx0XHRcdHJldHVybiBuZXcgUmVzcG9uc2UoJ0ludmFsaWQgVVJMJywgeyBzdGF0dXM6IDQwMCB9KTtcclxuXHRcdH1cclxuXHJcblx0XHRjb25zdCBoZWFkZXJzOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0ge1xyXG5cdFx0XHQnVXNlci1BZ2VudCc6ICdNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvMTI3LjAuMC4wIFNhZmFyaS81MzcuMzYnLFxyXG5cdFx0XHQnQWNjZXB0LUxhbmd1YWdlJzogJ2VuLVVTLGVuO3E9MC45JyxcclxuXHRcdFx0J1JlZmVyZXInOiAnaHR0cHM6Ly93d3cueW91dHViZS5jb20vJyxcclxuXHRcdFx0J09yaWdpbic6ICdodHRwczovL3d3dy55b3V0dWJlLmNvbSdcclxuXHRcdH07XHJcblx0XHRjb25zdCBzdG9yZWRDb29raWUgPSBhd2FpdCBnZXRTdG9yZWRDb29raWVIZWFkZXIoKTtcclxuXHRcdGlmIChzdG9yZWRDb29raWUpIGhlYWRlcnNbJ0Nvb2tpZSddID0gc3RvcmVkQ29va2llO1xyXG5cdFx0ZWxzZSBpZiAocHJvY2Vzcy5lbnYuWVRfQ09PS0lFKSBoZWFkZXJzWydDb29raWUnXSA9IHByb2Nlc3MuZW52LllUX0NPT0tJRTtcclxuXHRcdGNvbnN0IGluZm8gPSBhd2FpdCB5dGRsLmdldEluZm8odXJsLCB7IHJlcXVlc3RPcHRpb25zOiB7IGhlYWRlcnMgfSB9IGFzIGFueSk7XHJcblx0XHRjb25zdCB0aXRsZSA9IHNhbml0aXplKGluZm8udmlkZW9EZXRhaWxzLnRpdGxlIHx8ICd2aWRlbycpIHx8ICd2aWRlbyc7XHJcblxyXG5cdFx0Ly8gUHJlZmVyIE1QNCB3aXRoIGF1ZGlvK3ZpZGVvXHJcblx0XHRjb25zdCBtcDRGb3JtYXRzID0gaW5mby5mb3JtYXRzLmZpbHRlcigoZjogYW55KSA9PiBmLmNvbnRhaW5lciA9PT0gJ21wNCcgJiYgZi5oYXNBdWRpbyAmJiBmLmhhc1ZpZGVvKTtcclxuXHRcdGNvbnN0IHNlbGVjdGVkID0gbXA0Rm9ybWF0cy5sZW5ndGggPiAwID8geXRkbC5jaG9vc2VGb3JtYXQobXA0Rm9ybWF0cywgeyBxdWFsaXR5OiAnaGlnaGVzdCcgfSkgOiB5dGRsLmNob29zZUZvcm1hdChpbmZvLmZvcm1hdHMsIHsgcXVhbGl0eTogJ2hpZ2hlc3QnIH0pO1xyXG5cclxuXHRcdGNvbnN0IG5vZGVSZWFkYWJsZSA9IHl0ZGwuZG93bmxvYWRGcm9tSW5mbyhpbmZvLCB7IGZvcm1hdDogc2VsZWN0ZWQsIHJlcXVlc3RPcHRpb25zOiB7IGhlYWRlcnMgfSB9IGFzIGFueSk7XHJcblxyXG5cdFx0Y29uc3QgeyByZWFkYWJsZSwgd3JpdGFibGUgfSA9IG5ldyBUcmFuc2Zvcm1TdHJlYW0oKTtcclxuXHRcdGNvbnN0IHdyaXRlciA9IHdyaXRhYmxlLmdldFdyaXRlcigpO1xyXG5cdFx0bm9kZVJlYWRhYmxlLm9uKCdkYXRhJywgKGNodW5rOiBhbnkpID0+IHdyaXRlci53cml0ZShjaHVuaykpO1xyXG5cdFx0bm9kZVJlYWRhYmxlLm9uKCdlbmQnLCAoKSA9PiB7IHRyeSB7IHdyaXRlci5jbG9zZSgpOyB9IGNhdGNoIHt9IH0pO1xyXG5cdFx0bm9kZVJlYWRhYmxlLm9uKCdlcnJvcicsIChlcnI6IGFueSkgPT4geyB0cnkgeyB3cml0ZXIuYWJvcnQoZXJyKTsgfSBjYXRjaCB7fSB9KTtcclxuXHJcblx0XHRjb25zdCByZXNwb25zZUhlYWRlcnMgPSBuZXcgSGVhZGVycygpO1xyXG5cdFx0cmVzcG9uc2VIZWFkZXJzLnNldCgnQ29udGVudC1UeXBlJywgJ3ZpZGVvL21wNCcpO1xyXG5cdFx0Y29uc3QgYXNjaWlGYWxsYmFjayA9IHNhbml0aXplKCh0aXRsZSB8fCAndmlkZW8nKS5yZXBsYWNlKC9bXlxceDIwLVxceDdFXS9nLCAnJykpIHx8ICd2aWRlbyc7XHJcblx0XHRjb25zdCB1dGY4RW5jb2RlZCA9IGVuY29kZVVSSUNvbXBvbmVudChgJHt0aXRsZX0ubXA0YCk7XHJcblx0XHRyZXNwb25zZUhlYWRlcnMuc2V0KCdDb250ZW50LURpc3Bvc2l0aW9uJywgYGF0dGFjaG1lbnQ7IGZpbGVuYW1lPVwiJHthc2NpaUZhbGxiYWNrfS5tcDRcIjsgZmlsZW5hbWUqPVVURi04Jycke3V0ZjhFbmNvZGVkfWApO1xyXG5cclxuXHRcdHJldHVybiBuZXcgUmVzcG9uc2UocmVhZGFibGUgYXMgYW55LCB7IGhlYWRlcnM6IHJlc3BvbnNlSGVhZGVycyB9KTtcclxuXHR9IGNhdGNoIChlcnI6IGFueSkge1xyXG5cdFx0cmV0dXJuIG5ldyBSZXNwb25zZShlcnI/Lm1lc3NhZ2UgfHwgJ0ZhaWxlZCB0byBkb3dubG9hZCcsIHsgc3RhdHVzOiA1MDAgfSk7XHJcblx0fVxyXG59XHJcblxyXG5cclxuIl0sIm5hbWVzIjpbInl0ZGwiLCJzYW5pdGl6ZSIsImdldFN0b3JlZENvb2tpZUhlYWRlciIsImR5bmFtaWMiLCJydW50aW1lIiwiR0VUIiwicmVxdWVzdCIsInNlYXJjaFBhcmFtcyIsIlVSTCIsInVybCIsImdldCIsInZhbGlkYXRlVVJMIiwiUmVzcG9uc2UiLCJzdGF0dXMiLCJoZWFkZXJzIiwic3RvcmVkQ29va2llIiwicHJvY2VzcyIsImVudiIsIllUX0NPT0tJRSIsImluZm8iLCJnZXRJbmZvIiwicmVxdWVzdE9wdGlvbnMiLCJ0aXRsZSIsInZpZGVvRGV0YWlscyIsIm1wNEZvcm1hdHMiLCJmb3JtYXRzIiwiZmlsdGVyIiwiZiIsImNvbnRhaW5lciIsImhhc0F1ZGlvIiwiaGFzVmlkZW8iLCJzZWxlY3RlZCIsImxlbmd0aCIsImNob29zZUZvcm1hdCIsInF1YWxpdHkiLCJub2RlUmVhZGFibGUiLCJkb3dubG9hZEZyb21JbmZvIiwiZm9ybWF0IiwicmVhZGFibGUiLCJ3cml0YWJsZSIsIlRyYW5zZm9ybVN0cmVhbSIsIndyaXRlciIsImdldFdyaXRlciIsIm9uIiwiY2h1bmsiLCJ3cml0ZSIsImNsb3NlIiwiZXJyIiwiYWJvcnQiLCJyZXNwb25zZUhlYWRlcnMiLCJIZWFkZXJzIiwic2V0IiwiYXNjaWlGYWxsYmFjayIsInJlcGxhY2UiLCJ1dGY4RW5jb2RlZCIsImVuY29kZVVSSUNvbXBvbmVudCIsIm1lc3NhZ2UiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./app/api/download/video/route.ts\n");
+
+/***/ }),
+
+/***/ "(rsc)/./lib/cookieStore.ts":
+/*!****************************!*\
+  !*** ./lib/cookieStore.ts ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   getStoredCookieHeader: () => (/* binding */ getStoredCookieHeader)\n/* harmony export */ });\n/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fs/promises */ \"fs/promises\");\n/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs_promises__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ \"path\");\n/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);\n\n\nconst COOKIE_FILE = path__WEBPACK_IMPORTED_MODULE_1___default().join(process.cwd(), \"cookie\", \"cookie.txt\");\nfunction parseCookiesTxtToHeader(cookiesTxt) {\n    const cookieNameToValue = {};\n    const lines = cookiesTxt.split(/\\r?\\n/);\n    for (const rawLine of lines){\n        const line = rawLine.trim();\n        if (!line || line.startsWith(\"#\")) continue;\n        const parts = line.split(/\\t+/);\n        if (parts.length >= 7) {\n            const name = parts[5];\n            const value = parts.slice(6).join(\"\t\");\n            if (name) cookieNameToValue[name] = value;\n            continue;\n        }\n        // Fallback: try space-separated\n        const wsParts = line.split(/\\s+/);\n        if (wsParts.length >= 7) {\n            const name = wsParts[5];\n            const value = wsParts.slice(6).join(\" \");\n            if (name) cookieNameToValue[name] = value;\n        }\n    }\n    const pairs = Object.entries(cookieNameToValue).map(([name, value])=>`${name}=${value}`);\n    return pairs.join(\"; \");\n}\nasync function getStoredCookieHeader() {\n    try {\n        const content = await fs_promises__WEBPACK_IMPORTED_MODULE_0___default().readFile(COOKIE_FILE, \"utf8\");\n        if (!content.trim()) return null;\n        // If file looks like a Netscape cookies.txt, parse to header string\n        if (content.includes(\"\t\") || content.includes(\"Netscape\")) {\n            const header = parseCookiesTxtToHeader(content);\n            return header || null;\n        }\n        // Otherwise treat as a cookie header string\n        return content.trim();\n    } catch  {\n        // Fallback to environment variable (for Vercel deployment)\n        return process.env.YT_COOKIE_STORED || null;\n    }\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9saWIvY29va2llU3RvcmUudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7QUFBNkI7QUFDTDtBQUV4QixNQUFNRSxjQUFjRCxnREFBUyxDQUFDRyxRQUFRQyxHQUFHLElBQUksVUFBVTtBQUV2RCxTQUFTQyx3QkFBd0JDLFVBQWtCO0lBQ2xELE1BQU1DLG9CQUE0QyxDQUFDO0lBQ25ELE1BQU1DLFFBQVFGLFdBQVdHLEtBQUssQ0FBQztJQUMvQixLQUFLLE1BQU1DLFdBQVdGLE1BQU87UUFDNUIsTUFBTUcsT0FBT0QsUUFBUUUsSUFBSTtRQUN6QixJQUFJLENBQUNELFFBQVFBLEtBQUtFLFVBQVUsQ0FBQyxNQUFNO1FBQ25DLE1BQU1DLFFBQVFILEtBQUtGLEtBQUssQ0FBQztRQUN6QixJQUFJSyxNQUFNQyxNQUFNLElBQUksR0FBRztZQUN0QixNQUFNQyxPQUFPRixLQUFLLENBQUMsRUFBRTtZQUNyQixNQUFNRyxRQUFRSCxNQUFNSSxLQUFLLENBQUMsR0FBR2hCLElBQUksQ0FBQztZQUNsQyxJQUFJYyxNQUFNVCxpQkFBaUIsQ0FBQ1MsS0FBSyxHQUFHQztZQUNwQztRQUNEO1FBQ0EsZ0NBQWdDO1FBQ2hDLE1BQU1FLFVBQVVSLEtBQUtGLEtBQUssQ0FBQztRQUMzQixJQUFJVSxRQUFRSixNQUFNLElBQUksR0FBRztZQUN4QixNQUFNQyxPQUFPRyxPQUFPLENBQUMsRUFBRTtZQUN2QixNQUFNRixRQUFRRSxRQUFRRCxLQUFLLENBQUMsR0FBR2hCLElBQUksQ0FBQztZQUNwQyxJQUFJYyxNQUFNVCxpQkFBaUIsQ0FBQ1MsS0FBSyxHQUFHQztRQUNyQztJQUNEO0lBQ0EsTUFBTUcsUUFBUUMsT0FBT0MsT0FBTyxDQUFDZixtQkFBbUJnQixHQUFHLENBQUMsQ0FBQyxDQUFDUCxNQUFNQyxNQUFNLEdBQUssQ0FBQyxFQUFFRCxLQUFLLENBQUMsRUFBRUMsTUFBTSxDQUFDO0lBQ3pGLE9BQU9HLE1BQU1sQixJQUFJLENBQUM7QUFDbkI7QUFFTyxlQUFlc0I7SUFDckIsSUFBSTtRQUNILE1BQU1DLFVBQVUsTUFBTTFCLDJEQUFXLENBQUNFLGFBQWE7UUFDL0MsSUFBSSxDQUFDd0IsUUFBUWIsSUFBSSxJQUFJLE9BQU87UUFFNUIsb0VBQW9FO1FBQ3BFLElBQUlhLFFBQVFFLFFBQVEsQ0FBQyxRQUFTRixRQUFRRSxRQUFRLENBQUMsYUFBYTtZQUMzRCxNQUFNQyxTQUFTdkIsd0JBQXdCb0I7WUFDdkMsT0FBT0csVUFBVTtRQUNsQjtRQUVBLDRDQUE0QztRQUM1QyxPQUFPSCxRQUFRYixJQUFJO0lBQ3BCLEVBQUUsT0FBTTtRQUNQLDJEQUEyRDtRQUMzRCxPQUFPVCxRQUFRMEIsR0FBRyxDQUFDQyxnQkFBZ0IsSUFBSTtJQUN4QztBQUNEIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8veXQtZG93bmxvYWRlci8uL2xpYi9jb29raWVTdG9yZS50cz8zZWFjIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBmcyBmcm9tICdmcy9wcm9taXNlcyc7XHJcbmltcG9ydCBwYXRoIGZyb20gJ3BhdGgnO1xyXG5cclxuY29uc3QgQ09PS0lFX0ZJTEUgPSBwYXRoLmpvaW4ocHJvY2Vzcy5jd2QoKSwgJ2Nvb2tpZScsICdjb29raWUudHh0Jyk7XHJcblxyXG5mdW5jdGlvbiBwYXJzZUNvb2tpZXNUeHRUb0hlYWRlcihjb29raWVzVHh0OiBzdHJpbmcpOiBzdHJpbmcge1xyXG5cdGNvbnN0IGNvb2tpZU5hbWVUb1ZhbHVlOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0ge307XHJcblx0Y29uc3QgbGluZXMgPSBjb29raWVzVHh0LnNwbGl0KC9cXHI/XFxuLyk7XHJcblx0Zm9yIChjb25zdCByYXdMaW5lIG9mIGxpbmVzKSB7XHJcblx0XHRjb25zdCBsaW5lID0gcmF3TGluZS50cmltKCk7XHJcblx0XHRpZiAoIWxpbmUgfHwgbGluZS5zdGFydHNXaXRoKCcjJykpIGNvbnRpbnVlO1xyXG5cdFx0Y29uc3QgcGFydHMgPSBsaW5lLnNwbGl0KC9cXHQrLyk7XHJcblx0XHRpZiAocGFydHMubGVuZ3RoID49IDcpIHtcclxuXHRcdFx0Y29uc3QgbmFtZSA9IHBhcnRzWzVdO1xyXG5cdFx0XHRjb25zdCB2YWx1ZSA9IHBhcnRzLnNsaWNlKDYpLmpvaW4oJ1xcdCcpO1xyXG5cdFx0XHRpZiAobmFtZSkgY29va2llTmFtZVRvVmFsdWVbbmFtZV0gPSB2YWx1ZTtcclxuXHRcdFx0Y29udGludWU7XHJcblx0XHR9XHJcblx0XHQvLyBGYWxsYmFjazogdHJ5IHNwYWNlLXNlcGFyYXRlZFxyXG5cdFx0Y29uc3Qgd3NQYXJ0cyA9IGxpbmUuc3BsaXQoL1xccysvKTtcclxuXHRcdGlmICh3c1BhcnRzLmxlbmd0aCA+PSA3KSB7XHJcblx0XHRcdGNvbnN0IG5hbWUgPSB3c1BhcnRzWzVdO1xyXG5cdFx0XHRjb25zdCB2YWx1ZSA9IHdzUGFydHMuc2xpY2UoNikuam9pbignICcpO1xyXG5cdFx0XHRpZiAobmFtZSkgY29va2llTmFtZVRvVmFsdWVbbmFtZV0gPSB2YWx1ZTtcclxuXHRcdH1cclxuXHR9XHJcblx0Y29uc3QgcGFpcnMgPSBPYmplY3QuZW50cmllcyhjb29raWVOYW1lVG9WYWx1ZSkubWFwKChbbmFtZSwgdmFsdWVdKSA9PiBgJHtuYW1lfT0ke3ZhbHVlfWApO1xyXG5cdHJldHVybiBwYWlycy5qb2luKCc7ICcpO1xyXG59XHJcblxyXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0U3RvcmVkQ29va2llSGVhZGVyKCk6IFByb21pc2U8c3RyaW5nIHwgbnVsbD4ge1xyXG5cdHRyeSB7XHJcblx0XHRjb25zdCBjb250ZW50ID0gYXdhaXQgZnMucmVhZEZpbGUoQ09PS0lFX0ZJTEUsICd1dGY4Jyk7XHJcblx0XHRpZiAoIWNvbnRlbnQudHJpbSgpKSByZXR1cm4gbnVsbDtcclxuXHRcdFxyXG5cdFx0Ly8gSWYgZmlsZSBsb29rcyBsaWtlIGEgTmV0c2NhcGUgY29va2llcy50eHQsIHBhcnNlIHRvIGhlYWRlciBzdHJpbmdcclxuXHRcdGlmIChjb250ZW50LmluY2x1ZGVzKCdcXHQnKSB8fCBjb250ZW50LmluY2x1ZGVzKCdOZXRzY2FwZScpKSB7XHJcblx0XHRcdGNvbnN0IGhlYWRlciA9IHBhcnNlQ29va2llc1R4dFRvSGVhZGVyKGNvbnRlbnQpO1xyXG5cdFx0XHRyZXR1cm4gaGVhZGVyIHx8IG51bGw7XHJcblx0XHR9XHJcblx0XHRcclxuXHRcdC8vIE90aGVyd2lzZSB0cmVhdCBhcyBhIGNvb2tpZSBoZWFkZXIgc3RyaW5nXHJcblx0XHRyZXR1cm4gY29udGVudC50cmltKCk7XHJcblx0fSBjYXRjaCB7XHJcblx0XHQvLyBGYWxsYmFjayB0byBlbnZpcm9ubWVudCB2YXJpYWJsZSAoZm9yIFZlcmNlbCBkZXBsb3ltZW50KVxyXG5cdFx0cmV0dXJuIHByb2Nlc3MuZW52LllUX0NPT0tJRV9TVE9SRUQgfHwgbnVsbDtcclxuXHR9XHJcbn1cclxuXHJcblxyXG4iXSwibmFtZXMiOlsiZnMiLCJwYXRoIiwiQ09PS0lFX0ZJTEUiLCJqb2luIiwicHJvY2VzcyIsImN3ZCIsInBhcnNlQ29va2llc1R4dFRvSGVhZGVyIiwiY29va2llc1R4dCIsImNvb2tpZU5hbWVUb1ZhbHVlIiwibGluZXMiLCJzcGxpdCIsInJhd0xpbmUiLCJsaW5lIiwidHJpbSIsInN0YXJ0c1dpdGgiLCJwYXJ0cyIsImxlbmd0aCIsIm5hbWUiLCJ2YWx1ZSIsInNsaWNlIiwid3NQYXJ0cyIsInBhaXJzIiwiT2JqZWN0IiwiZW50cmllcyIsIm1hcCIsImdldFN0b3JlZENvb2tpZUhlYWRlciIsImNvbnRlbnQiLCJyZWFkRmlsZSIsImluY2x1ZGVzIiwiaGVhZGVyIiwiZW52IiwiWVRfQ09PS0lFX1NUT1JFRCJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(rsc)/./lib/cookieStore.ts\n");
+
+/***/ })
+
+};
+;
+
+// load runtime
+var __webpack_require__ = require("../../../../webpack-runtime.js");
+__webpack_require__.C(exports);
+var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/undici","vendor-chunks/tldts","vendor-chunks/tough-cookie","vendor-chunks/@distube","vendor-chunks/sax","vendor-chunks/m3u8stream","vendor-chunks/tldts-core","vendor-chunks/debug","vendor-chunks/miniget","vendor-chunks/http-cookie-agent","vendor-chunks/ms","vendor-chunks/sanitize-filename","vendor-chunks/truncate-utf8-bytes"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Fapi%2Fdownload%2Fvideo%2Froute&page=%2Fapi%2Fdownload%2Fvideo%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fdownload%2Fvideo%2Froute.ts&appDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5CHimadri%5CDocuments%5CGitHub%5CYoutube-Video-And-Music-Downloader&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+module.exports = __webpack_exports__;
+
+})();
