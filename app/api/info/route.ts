@@ -1,5 +1,4 @@
 import ytdl from '@distube/ytdl-core';
-import { DEFAULT_PIPED_INSTANCE, fetchPipedStreams } from '../../lib/piped';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -18,26 +17,14 @@ export async function GET(request: Request) {
 			'Origin': 'https://www.youtube.com'
 		};
 		if (process.env.YT_COOKIE) headers['Cookie'] = process.env.YT_COOKIE;
-
-		try {
-			const info = await ytdl.getInfo(url, { requestOptions: { headers } } as any);
-			const videoDetails = info.videoDetails;
-			const thumbnail = videoDetails.thumbnails?.[videoDetails.thumbnails.length - 1]?.url || '';
-			return Response.json({
-				title: videoDetails.title,
-				durationSeconds: Number(videoDetails.lengthSeconds || 0),
-				thumbnailUrl: thumbnail
-			});
-		} catch {
-			// ytdl failed (possibly due to age/region restrictions). Fallback to Piped
-			const id = ytdl.getURLVideoID(url);
-			const piped = await fetchPipedStreams(id, DEFAULT_PIPED_INSTANCE);
-			return Response.json({
-				title: piped.title,
-				durationSeconds: Number(piped.duration || 0),
-				thumbnailUrl: piped.thumbnailUrl || ''
-			});
-		}
+		const info = await ytdl.getInfo(url, { requestOptions: { headers } } as any);
+		const videoDetails = info.videoDetails;
+		const thumbnail = videoDetails.thumbnails?.[videoDetails.thumbnails.length - 1]?.url || '';
+		return Response.json({
+			title: videoDetails.title,
+			durationSeconds: Number(videoDetails.lengthSeconds || 0),
+			thumbnailUrl: thumbnail
+		});
 	} catch (err: any) {
 		console.error('GET /api/info error:', err);
 		return new Response(JSON.stringify({ error: err?.message || 'Failed to fetch info' }), { status: 500 });
